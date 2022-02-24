@@ -4,5 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Data" Version="21.2.5" />
+  </ItemGroup>
+
 
 </Project>
