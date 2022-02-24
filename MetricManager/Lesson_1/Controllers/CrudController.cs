@@ -58,11 +58,11 @@ namespace Lesson_1
         }
         public void Add(string input)
         {
-            Values.Append(input);
+            _values.Add(input);
         }
         public List<string> Get()
         {
-            return Values;
+            return _values;
         }
 
     }
