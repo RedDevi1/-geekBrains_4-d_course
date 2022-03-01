@@ -11,15 +11,15 @@ namespace Lesson_1.Controllers
     [ApiController]
     public class CrudController : ControllerBase
     {
-        private readonly ValuesHolder _holder;
+        private ValuesHolder _holder;
         public CrudController(ValuesHolder holder)
         {
             _holder = holder;
         }
         [HttpPost("create")]
-        public IActionResult Create ([FromQuery] string input)
+        public IActionResult Create ([FromQuery] string key, [FromQuery] string value)
         {
-            _holder.Add(input);
+            _holder.Add(value);
             return Ok();
         }
         [HttpGet("read")]
@@ -58,11 +58,11 @@ namespace Lesson_1
         }
         public void Add(string input)
         {
-            Values.Append(input);
+            _values.Add(input);
         }
         public List<string> Get()
         {
-            return Values;
+            return _values;
         }
 
     }

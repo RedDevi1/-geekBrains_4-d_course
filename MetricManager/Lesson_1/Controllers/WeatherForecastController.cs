@@ -17,23 +17,37 @@ namespace Lesson_1.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-
+        private SortedList<WeatherForecast, WeatherForecast> _holderOfTheTemperature;
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
         }
 
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpPost]
+        public IActionResult Create([FromQuery] DateTime time, [FromQuery] int temperature)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            if (!_holderOfTheTemperature.ContainsKey(time))
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
+                var curWeather = new WeatherForecast { Date = time, TemperatureC = temperature };
+                _holderOfTheTemperature.Add(curWeather.Date, curWeather);
+            }               
+            else
+                throw new ArgumentException($"An element with Key = {time} already exists.");
+            return Ok();
+        }
+
+        [HttpGet]
+        public IEnumerable<WeatherForecast> Get(DateTime begining, DateTime end)
+        {
+            return Enumerable.TakeWhile(_holderOfTheTemperature.Values, index => )
             .ToArray();
+        }
+
+        [HttpPut]
+        public IActionResult Update([FromQuery] string stringsToUpdate, [FromQuery] string newValue)
+        {
+            //foreach (var date in )
+            return Ok();
         }
     }
 }
