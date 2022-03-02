@@ -17,7 +17,8 @@ namespace Lesson_1.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private SortedList<WeatherForecast, WeatherForecast> _holderOfTheTemperature;
+        private SortedList<DateTime, WeatherForecast> _holderOfTheTemperature;
+        private WeatherForecast weather;
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
@@ -28,8 +29,8 @@ namespace Lesson_1.Controllers
         {
             if (!_holderOfTheTemperature.ContainsKey(time))
             {
-                var curWeather = new WeatherForecast { Date = time, TemperatureC = temperature };
-                _holderOfTheTemperature.Add(curWeather.Date, curWeather);
+                weather = new WeatherForecast { Date = time, TemperatureC = temperature };
+                _holderOfTheTemperature.Add(weather.Date, weather);
             }               
             else
                 throw new ArgumentException($"An element with Key = {time} already exists.");
@@ -37,16 +38,27 @@ namespace Lesson_1.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get(DateTime begining, DateTime end)
+        public IEnumerable<WeatherForecast> Get([FromQuery] DateTime begining, [FromQuery] DateTime end)
         {
-            return Enumerable.TakeWhile(_holderOfTheTemperature.Values, index => )
+            return Enumerable.TakeWhile(_holderOfTheTemperature.Values, index => (index.Date >= begining && index.Date <= end))
             .ToArray();
         }
 
         [HttpPut]
-        public IActionResult Update([FromQuery] string stringsToUpdate, [FromQuery] string newValue)
+        public IActionResult Update([FromQuery] DateTime dateToUpdate, [FromQuery] int newValue)
         {
-            //foreach (var date in )
+            foreach (var w in _holderOfTheTemperature)
+                if (w.Key == dateToUpdate)
+                    w.Value.TemperatureC = newValue;
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IActionResult Delete([FromQuery] DateTime toDelete)
+        {
+            foreach (var w in _holderOfTheTemperature)
+                if (w.Key == toDelete)
+                    _holderOfTheTemperature.Remove(w.Key);
             return Ok();
         }
     }

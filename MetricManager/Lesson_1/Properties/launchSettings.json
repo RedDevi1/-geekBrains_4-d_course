@@ -12,8 +12,8 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/crud/read",
-      //"launchUrl": "weatherforecast",
+      //"launchUrl": "api/crud/read",
+      "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -21,8 +21,8 @@
     "Lesson_1": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/crud/read",
-      //"launchUrl": "weatherforecast",
+      //"launchUrl": "api/crud/read",
+      "launchUrl": "weatherforecast",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
