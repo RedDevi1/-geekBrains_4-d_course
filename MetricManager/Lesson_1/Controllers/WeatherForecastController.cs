@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Lesson_1.Controllers
 {
     [ApiController]
-    [Route("WeatherForecast")]
+    [Route("/")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -17,37 +17,37 @@ namespace Lesson_1.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private SortedList<DateTime, WeatherForecast> _holderOfTheTemperature;
-        private WeatherForecast weather;
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private ValuesHolder _holderOfTheTemperature;
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ValuesHolder holderOfTheTemperature)
         {
             _logger = logger;
+            _holderOfTheTemperature = holderOfTheTemperature;
         }
 
-        [HttpPost]
-        public IActionResult Create([FromQuery] DateTime time, [FromQuery] int temperature)
+        [HttpPost, Route("Create/{time}/{temperature}")]
+        public IActionResult Create([FromRoute] DateTime time, int temperature)
         {
-            if (!_holderOfTheTemperature.ContainsKey(time))
+            if (!_holderOfTheTemperature.Values.ContainsKey(time))
             {
-                weather = new WeatherForecast { Date = time, TemperatureC = temperature };
-                _holderOfTheTemperature.Add(weather.Date, weather);
+                var weather = new WeatherForecast { Date = time, TemperatureC = temperature };
+                _holderOfTheTemperature.Values.Add(weather.Date, weather);
             }               
             else
-                throw new ArgumentException($"An element with Key = {time} already exists.");
+                Console.WriteLine($"An element with Key = {time} already exists.");
             return Ok();
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get([FromQuery] DateTime begining, [FromQuery] DateTime end)
         {
-            return Enumerable.TakeWhile(_holderOfTheTemperature.Values, index => (index.Date >= begining && index.Date <= end))
+            return Enumerable.TakeWhile(_holderOfTheTemperature.Values.Values, index => (index.Date >= begining && index.Date <= end))
             .ToArray();
         }
 
         [HttpPut]
         public IActionResult Update([FromQuery] DateTime dateToUpdate, [FromQuery] int newValue)
         {
-            foreach (var w in _holderOfTheTemperature)
+            foreach (var w in _holderOfTheTemperature.Values)
                 if (w.Key == dateToUpdate)
                     w.Value.TemperatureC = newValue;
             return Ok();
@@ -56,9 +56,9 @@ namespace Lesson_1.Controllers
         [HttpDelete]
         public IActionResult Delete([FromQuery] DateTime toDelete)
         {
-            foreach (var w in _holderOfTheTemperature)
+            foreach (var w in _holderOfTheTemperature.Values)
                 if (w.Key == toDelete)
-                    _holderOfTheTemperature.Remove(w.Key);
+                    _holderOfTheTemperature.Values.Remove(w.Key);
             return Ok();
         }
     }
