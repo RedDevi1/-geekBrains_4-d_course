@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lesson_1.Controllers
+namespace MetricsManager.Controllers
 {
     [Route("api/metrics/cpu")]
     [ApiController]

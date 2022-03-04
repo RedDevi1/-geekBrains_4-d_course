@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Lesson_1
+namespace MetricsManager
 {
     public class ValuesHolder
     {
-        //private SortedList<TimeSpan, WeatherForecast> _values = new SortedList<DateTime, WeatherForecast>();
-        //public SortedList<TimeSpan, WeatherForecast> Values
-        //{ 
-        //    get => _values; 
-        //    set => _values = value; 
-        //}
+        private List<AgentInfo> _values = new List<AgentInfo>();
+        public List<AgentInfo> Values
+        {
+            get => _values;
+            set => _values = value;
+        }
     }
 }

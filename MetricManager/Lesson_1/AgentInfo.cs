@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Lesson_1
+namespace MetricsManager
 {
     public class AgentInfo
     {
