@@ -12,8 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      //"launchUrl": "api/crud/read",
-      "launchUrl": "weatherforecast",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -21,7 +20,6 @@
     "Lesson_1": {
       "commandName": "Project",
       "launchBrowser": true,
-      //"launchUrl": "api/crud/read",
       "launchUrl": "",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
