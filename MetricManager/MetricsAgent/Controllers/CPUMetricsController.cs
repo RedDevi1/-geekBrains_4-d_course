@@ -6,6 +6,7 @@ using MetricsAgent.DAL;
 using System.Collections.Generic;
 using MetricsAgent.Requests;
 using MetricsAgent.Responses;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,15 +16,19 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class CPUMetricsController : ControllerBase
     {
+        private readonly ILogger<CPUMetricsController> _logger;
         private ICpuMetricsRepository repository;
-        public CPUMetricsController(ICpuMetricsRepository repository)
+        public CPUMetricsController(ILogger<CPUMetricsController> logger, ICpuMetricsRepository repository)
         {
+            _logger = logger;
+            _logger.LogDebug(1, "NLog встроен в CPUMetricsController");
             this.repository = repository;
         }
 
         [HttpPost("create")]
         public IActionResult Create([FromBody] CpuMetricCreateRequest request)
         {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
             repository.Create(new CpuMetric
             {
                 Time = request.Time,
@@ -35,6 +40,7 @@ namespace MetricsAgent.Controllers
         [HttpGet("all")]
         public IActionResult GetAll()
         {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
             var metrics = repository.GetAll();
             var response = new AllCpuMetricsResponse()
             {
@@ -55,16 +61,19 @@ namespace MetricsAgent.Controllers
         [HttpGet("from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
         public IActionResult GetMetricsWithPercentiles([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime, [FromRoute] int percentile)
         {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
             return Ok();
         }
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsWithoutPercentiles([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
             return Ok();
         }
         [HttpGet("sql-test")]
         public IActionResult TryToSqlLite()
         {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
             string cs = "Data Source = :memory:";
             string stm = "SELECT SQLITE_VERSION()";
             using (var con = new SQLiteConnection(cs))
@@ -133,6 +142,6 @@ namespace MetricsAgent
     {
         public int Id { get; set; }
         public int Value { get; set; }
-        public TimeSpan Time { get; set; }
+        public int Time { get; set; }
     }
 }

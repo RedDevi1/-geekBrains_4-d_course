@@ -9,6 +9,7 @@ namespace MetricsAgent.DAL
     {
         IList<T> GetAll();
         T GetById(int Id);
+        T GetByTimePeriod(DateTime begining, DateTime end);
         void Create(T item);
         void Update(T item);
         void Delete(int id);
