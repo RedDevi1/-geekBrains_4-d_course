@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MetricsAgent
 {
-    public class DotnetMetric
+    public class NetworkMetric
     {
         public int Id { get; set; }
         public int Value { get; set; }

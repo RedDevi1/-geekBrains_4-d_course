@@ -142,6 +142,6 @@ namespace MetricsAgent
     {
         public int Id { get; set; }
         public int Value { get; set; }
-        public int Time { get; set; }
+        public TimeSpan Time { get; set; }
     }
 }

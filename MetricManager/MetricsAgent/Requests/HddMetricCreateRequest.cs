@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MetricsAgent
+namespace MetricsAgent.Requests
 {
-    public class DotnetMetric
+    public class HddMetricCreateRequest
     {
-        public int Id { get; set; }
-        public int Value { get; set; }
         public TimeSpan Time { get; set; }
+        public int Value { get; set; }
     }
 }

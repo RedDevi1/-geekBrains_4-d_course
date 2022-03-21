@@ -16,9 +16,9 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class DotNetMetricsController : ControllerBase
     {
-        private readonly ILogger<CPUMetricsController> _logger;
+        private readonly ILogger<DotNetMetricsController> _logger;
         private IDotNetMetricsRepository repository;
-        public DotNetMetricsController(ILogger<CPUMetricsController> logger, IDotNetMetricsRepository repository)
+        public DotNetMetricsController(ILogger<DotNetMetricsController> logger, IDotNetMetricsRepository repository)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в DotNetMetricsController");
