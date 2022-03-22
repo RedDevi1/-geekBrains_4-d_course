@@ -12,8 +12,8 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class HDDMetricsController : ControllerBase
     {
-        private readonly ILogger<CPUMetricsController> _logger;
-        public HDDMetricsController(ILogger<CPUMetricsController> logger)
+        private readonly ILogger<HDDMetricsController> _logger;
+        public HDDMetricsController(ILogger<HDDMetricsController> logger)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в HDDMetricsController");

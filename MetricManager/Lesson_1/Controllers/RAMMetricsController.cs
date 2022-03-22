@@ -12,8 +12,8 @@ namespace MetricsManager.Controllers
     [ApiController]
     public class RAMMetricsController : ControllerBase
     {
-        private readonly ILogger<CPUMetricsController> _logger;
-        public RAMMetricsController(ILogger<CPUMetricsController> logger)
+        private readonly ILogger<RAMMetricsController> _logger;
+        public RAMMetricsController(ILogger<RAMMetricsController> logger)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в RAMMetricsController");

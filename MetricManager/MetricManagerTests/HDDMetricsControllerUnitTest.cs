@@ -2,15 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Xunit;
+using Moq;
+using Microsoft.Extensions.Logging;
 
 namespace MetricManagerTests
 {
     public class HDDMetricsControllerUnitTest
     {
         private HDDMetricsController controller;
+        private readonly Mock<ILogger<HDDMetricsController>> mockLogger;
         public HDDMetricsControllerUnitTest()
         {
-            controller = new HDDMetricsController();
+            mockLogger = new Mock<ILogger<HDDMetricsController>>();
+            controller = new HDDMetricsController(mockLogger.Object);
         }
 
         [Fact]
