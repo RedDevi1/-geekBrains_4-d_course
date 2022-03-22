@@ -13,11 +13,12 @@ namespace MetricsAgentTests
     {
         private CPUMetricsController controller;
         private Mock<ICpuMetricsRepository> mock;
-        private ILogger<CPUMetricsController> logger;
+        private readonly Mock<ILogger<CPUMetricsController>> mockLogger;
         public CPUMetricsControllerUnitTest()
         {
             mock = new Mock<ICpuMetricsRepository>();
-            controller = new CPUMetricsController(logger, mock.Object);
+            mockLogger = new Mock<ILogger<CPUMetricsController>>();
+            controller = new CPUMetricsController(mockLogger.Object, mock.Object);
         }
 
         [Fact]
