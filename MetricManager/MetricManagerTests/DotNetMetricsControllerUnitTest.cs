@@ -1,16 +1,16 @@
-using MetricsManager.Controllers;
+﻿using MetricsManager.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Xunit;
 
 namespace MetricManagerTests
 {
-    public class CPUMetricsControllerUnitTest
+    public class DotNetMetricsControllerUnitTest
     {
-        private CPUMetricsController controller;
-        public CPUMetricsControllerUnitTest ()
+        private DotNetMetricsController controller;
+        public DotNetMetricsControllerUnitTest()
         {
-            controller = new CPUMetricsController();
+            controller = new DotNetMetricsController();
         }
 
         [Fact]
