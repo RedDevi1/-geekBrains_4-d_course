@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using MetricsAgent.DAL;
+using MetricsAgent.Requests;
+using MetricsAgent.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +15,52 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class HDDMetricsController : ControllerBase
     {
+        private readonly ILogger<HDDMetricsController> _logger;
+        private IHddMetricsRepository repository;
+        public HDDMetricsController(ILogger<HDDMetricsController> logger, IHddMetricsRepository repository)
+        {
+            _logger = logger;
+            _logger.LogDebug(1, "NLog встроен в HDDMetricsController");
+            this.repository = repository;
+        }
+
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] HddMetricCreateRequest request)
+        {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
+            repository.Create(new HddMetric
+            {
+                Time = request.Time,
+                Value = request.Value
+            });
+            return Ok();
+        }
+
+        [HttpGet("all")]
+        public IActionResult GetAll()
+        {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
+            var metrics = repository.GetAll();
+            var response = new AllHddMetricsResponse()
+            {
+                Metrics = new List<HddMetricDto>()
+            };
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(new HddMetricDto
+                {
+                    Time = metric.Time,
+                    Value = metric.Value,
+                    Id = metric.Id
+                });
+            }
+            return Ok(response);
+        }
+
         [HttpGet("left")]
         public IActionResult GetFreeSpaceSizeInMegabytes()
         {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
             return Ok();
         }
     }

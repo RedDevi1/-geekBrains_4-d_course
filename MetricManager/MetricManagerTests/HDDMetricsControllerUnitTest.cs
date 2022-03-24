@@ -1,4 +1,4 @@
-using MetricsManager.Controllers;
+﻿using MetricsManager.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Xunit;
@@ -7,14 +7,14 @@ using Microsoft.Extensions.Logging;
 
 namespace MetricManagerTests
 {
-    public class CPUMetricsControllerUnitTest
+    public class HDDMetricsControllerUnitTest
     {
-        private CPUMetricsController controller;
-        private readonly Mock<ILogger<CPUMetricsController>> mockLogger;
-        public CPUMetricsControllerUnitTest ()
+        private HDDMetricsController controller;
+        private readonly Mock<ILogger<HDDMetricsController>> mockLogger;
+        public HDDMetricsControllerUnitTest()
         {
-            mockLogger = new Mock<ILogger<CPUMetricsController>>();
-            controller = new CPUMetricsController(mockLogger.Object);
+            mockLogger = new Mock<ILogger<HDDMetricsController>>();
+            controller = new HDDMetricsController(mockLogger.Object);
         }
 
         [Fact]
