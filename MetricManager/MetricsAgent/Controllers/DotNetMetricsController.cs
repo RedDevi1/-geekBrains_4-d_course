@@ -3,10 +3,12 @@ using System.Data.SQLite;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Microsoft.Extensions.Logging;
-using MetricsAgent.DAL;
+using AutoMapper;
 using MetricsAgent.Requests;
 using MetricsAgent.Responses;
 using System.Collections.Generic;
+using MetricsAgent.Metrics;
+using MetricsAgent.DAL.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,11 +20,13 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<DotNetMetricsController> _logger;
         private IDotNetMetricsRepository repository;
-        public DotNetMetricsController(ILogger<DotNetMetricsController> logger, IDotNetMetricsRepository repository)
+        private readonly IMapper mapper;
+        public DotNetMetricsController(ILogger<DotNetMetricsController> logger, IDotNetMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в DotNetMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpPost("create")]
@@ -41,19 +45,15 @@ namespace MetricsAgent.Controllers
         public IActionResult GetAll()
         {
             _logger.LogInformation("Привет, это мое первое сообщение в лог");
-            var metrics = repository.GetAll();
+
+            IList<DotnetMetric> metrics = repository.GetAll();
             var response = new AllDotnetMetricsResponse()
             {
                 Metrics = new List<DotnetMetricDto>()
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new DotnetMetricDto
-                {
-                    Time = metric.Time,
-                    Value = metric.Value,
-                    Id = metric.Id
-                });
+                response.Metrics.Add(mapper.Map<DotnetMetricDto>(metric));
             }
             return Ok(response);
         }

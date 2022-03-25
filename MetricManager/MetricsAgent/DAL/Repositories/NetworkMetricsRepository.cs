@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using Dapper;
 using System.Linq;
+using MetricsAgent.DAL.Interfaces;
+using MetricsAgent.Metrics;
 using System.Threading.Tasks;
 
-namespace MetricsAgent.DAL
+namespace MetricsAgent.DAL.Repositories
 {
-    public interface INetworkMetricsRepository : IRepository<NetworkMetric>
-    {
-    }
     public class NetworkMetricsRepository : INetworkMetricsRepository
     {
         private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";

@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MetricsAgent.DAL;
+using AutoMapper;
 using MetricsAgent.Requests;
 using MetricsAgent.Responses;
 using System;
 using System.Collections.Generic;
+using MetricsAgent.Metrics;
+using MetricsAgent.DAL.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,11 +19,13 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<RAMMetricsController> _logger;
         private IRamMetricsRepository repository;
-        public RAMMetricsController(ILogger<RAMMetricsController> logger, IRamMetricsRepository repository)
+        private readonly IMapper mapper;
+        public RAMMetricsController(ILogger<RAMMetricsController> logger, IRamMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в RAMMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpPost("create")]
@@ -40,19 +44,15 @@ namespace MetricsAgent.Controllers
         public IActionResult GetAll()
         {
             _logger.LogInformation("Привет, это мое первое сообщение в лог");
-            var metrics = repository.GetAll();
+
+            IList<RamMetric> metrics = repository.GetAll();
             var response = new AllRamMetricsResponse()
             {
                 Metrics = new List<RamMetricDto>()
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new RamMetricDto
-                {
-                    Time = metric.Time,
-                    Value = metric.Value,
-                    Id = metric.Id
-                });
+                response.Metrics.Add(mapper.Map<RamMetricDto>(metric));
             }
             return Ok(response);
         }

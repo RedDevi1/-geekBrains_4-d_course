@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using Dapper;
+using MetricsAgent.DAL.Interfaces;
+using MetricsAgent.Metrics;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MetricsAgent.DAL
+namespace MetricsAgent.DAL.Repositories
 {
-    public interface ICpuMetricsRepository : IRepository<CpuMetric>
-    {
-    }
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
         private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=True;Max Pool Size=100;";
