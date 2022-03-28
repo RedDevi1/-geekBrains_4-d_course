@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Data.SQLite;
-using MetricsAgent.DAL;
+using AutoMapper;
 using System.Collections.Generic;
 using MetricsAgent.Requests;
 using MetricsAgent.Responses;
 using Microsoft.Extensions.Logging;
+using MetricsAgent.Metrics;
+using MetricsAgent.DAL.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,11 +20,13 @@ namespace MetricsAgent.Controllers
     {
         private readonly ILogger<CPUMetricsController> _logger;
         private ICpuMetricsRepository repository;
-        public CPUMetricsController(ILogger<CPUMetricsController> logger, ICpuMetricsRepository repository)
+        private readonly IMapper mapper;
+        public CPUMetricsController(ILogger<CPUMetricsController> logger, ICpuMetricsRepository repository, IMapper mapper)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в CPUMetricsController");
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpPost("create")]
@@ -41,19 +45,15 @@ namespace MetricsAgent.Controllers
         public IActionResult GetAll()
         {
             _logger.LogInformation("Привет, это мое первое сообщение в лог");
-            var metrics = repository.GetAll();
+
+            IList<CpuMetric> metrics = repository.GetAll();
             var response = new AllCpuMetricsResponse()
             {
                 Metrics = new List<CpuMetricDto>()
             };
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new CpuMetricDto
-                {
-                    Time = metric.Time,
-                    Value = metric.Value,
-                    Id = metric.Id
-                });
+                response.Metrics.Add(mapper.Map<CpuMetricDto>(metric));
             }
             return Ok(response);
         }
@@ -133,15 +133,5 @@ namespace MetricsAgent.Controllers
 
         //    }
         //}
-    }
-}
-
-namespace MetricsAgent
-{
-    public class CpuMetric
-    {
-        public int Id { get; set; }
-        public int Value { get; set; }
-        public TimeSpan Time { get; set; }
     }
 }

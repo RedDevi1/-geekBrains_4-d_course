@@ -4,8 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MetricsAgent.DAL;
+using MetricsAgent.DAL.Repositories;
+using MetricsAgent.DAL.Interfaces;
 using System.Data.SQLite;
+using Core.Interfaces;
+using MetricsAgent.Mediator;
+using MetricsAgent.Notifiers;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -33,6 +38,11 @@ namespace MetricsAgent
             services.AddScoped<IHddMetricsRepository, HddMetricsRepository>();
             services.AddScoped<INetworkMetricsRepository, NetworkMetricsRepository>();
             services.AddScoped<IRamMetricsRepository, RamMetricsRepository>();
+            services.AddTransient<INotifier, Notifier1>();
+            services.AddTransient<INotifierMediatorService, NotifierMediatorService>();
+            var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
+            var mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         private void ConfigureSqlLiteConnection(IServiceCollection services)

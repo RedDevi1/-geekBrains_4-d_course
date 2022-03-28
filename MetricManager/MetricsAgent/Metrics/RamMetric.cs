@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MetricsAgent
+namespace MetricsAgent.Metrics
 {
-    public class DotnetMetric
+    public class RamMetric
     {
         public int Id { get; set; }
         public int Value { get; set; }
