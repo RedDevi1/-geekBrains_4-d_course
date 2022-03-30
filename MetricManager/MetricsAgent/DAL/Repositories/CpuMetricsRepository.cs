@@ -81,11 +81,21 @@ namespace MetricsAgent.DAL.Repositories
                     });
             }
         }
-        public IList<CpuMetric> GetByTimePeriod(TimeSpan fromTime, TimeSpan toTime)
+        public IList<CpuMetric> GetByTimePeriod(DateTime fromTime, DateTime toTime)
         {
+            //var metric = new CpuMetric();
+            var metricsListBeforParse = new List<CpuMetric>();
+            var metricsListAfterParse = new List<CpuMetric>();
+            var _fromTime = fromTime.TimeOfDay;
+            var _toTime = toTime.TimeOfDay;
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<CpuMetric>("SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime").ToList();
+                metricsListBeforParse = connection.Query<CpuMetric>("SELECT Id, Time, Value FROM cpumetrics WHERE time > @_fromTime AND time < @_toTime").ToList();
+                foreach (var cur_metric in metricsListBeforParse)
+                {
+                    cur_metric.Time = 
+                    metricsListAfterParse.Add(cur_metric.);
+                }
             }            
         }
     }

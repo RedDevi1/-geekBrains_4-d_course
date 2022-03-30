@@ -65,9 +65,11 @@ namespace MetricsAgent.Controllers
             return Ok();
         }
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsWithoutPercentiles([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public IActionResult GetMetricsWithoutPercentiles([FromRoute] DateTime fromTime, [FromRoute] DateTime toTime)
         {
             _logger.LogInformation("Привет, это мое первое сообщение в лог");
+            IList<CpuMetric> metrics = repository.GetByTimePeriod(fromTime, toTime);
+
             return Ok();
         }
         [HttpGet("sql-test")]

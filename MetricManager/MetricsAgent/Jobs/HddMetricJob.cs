@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace MetricsAgent.Jobs
 {
-    public class DotnetMetricJob : IJob
+    public class HddMetricJob : IJob
     {
-        private IDotNetMetricsRepository _repository;
-        // Счётчик для метрики gc-heap-size
-        private PerformanceCounter _dotnetCounter;
-        public DotnetMetricJob(IDotNetMetricsRepository repository)
+        private IHddMetricsRepository _repository;
+        // Счётчик для метрики HDD
+        private PerformanceCounter _hddCounter;
+        public HddMetricJob(IHddMetricsRepository repository)
         {
             _repository = repository;
-            _dotnetCounter = new PerformanceCounter();
+            _hddCounter = new PerformanceCounter("Memory", "Available MBytes");
         }
         public Task Execute(IJobExecutionContext context)
         {
-            // Получаем значение занятости gc-heap-size
-            var dotnetUsageInPercents = Convert.ToInt32(_dotnetCounter.NextValue());
+            // Получаем значение занятости HDD
+            var hddUsageInPercents = Convert.ToInt32(_hddCounter.NextValue());
 
             // Узнаем, когда мы сняли значение метрики
             var time = TimeSpan.FromSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
 
             // Теперь можно записать что-то посредством репозитория
-            _repository.Create(new Metrics.DotnetMetric { Time = time, Value = dotnetUsageInPercents });
+            _repository.Create(new Metrics.HddMetric { Time = time, Value = hddUsageInPercents });
             return Task.CompletedTask;
         }
     }
