@@ -11,6 +11,8 @@ using MetricsAgent.Metrics;
 using MetricsAgent.DAL.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Net.Http;
 
 namespace MetricsAgent.Controllers
 {
@@ -21,12 +23,14 @@ namespace MetricsAgent.Controllers
         private readonly ILogger<CPUMetricsController> _logger;
         private ICpuMetricsRepository repository;
         private readonly IMapper mapper;
-        public CPUMetricsController(ILogger<CPUMetricsController> logger, ICpuMetricsRepository repository, IMapper mapper)
+        private readonly IHttpClientFactory clientFactory;
+        public CPUMetricsController(ILogger<CPUMetricsController> logger, ICpuMetricsRepository repository, IMapper mapper, IHttpClientFactory clientFactory)
         {
             _logger = logger;
             _logger.LogDebug(1, "NLog встроен в CPUMetricsController");
             this.repository = repository;
             this.mapper = mapper;
+            this.clientFactory = clientFactory;
         }
 
         [HttpPost("create")]
@@ -86,6 +90,27 @@ namespace MetricsAgent.Controllers
                 return Ok(version);
             }
         }
+
+        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetMetricsFromAgent([FromRoute] int agentId, [FromRoute] DateTime fromTime, [FromRoute] DateTime toTime)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5000/api/metrics/cpu/from/1/to/999999?var=val&var1=val1");
+            request.Headers.Add("Accept", "application/vnd.github.v3+json");
+            var client = clientFactory.CreateClient();
+            HttpResponseMessage response = client.SendAsync(request).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                using var responseStream = response.Content.ReadAsStreamAsync().Result;
+                var metricsResponse = JsonSerializer.DeserializeAsync
+                <AllCpuMetricsResponse>(responseStream).Result;
+            }
+            else
+            {
+                // ошибка при получении ответа
+            }
+            return Ok();
+        }
+
         //[HttpGet("sql-read-write-test")]
         //public IActionResult TryToInsertAndRead()
         //{

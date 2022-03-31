@@ -66,9 +66,10 @@ namespace MetricsAgent
             services.AddSingleton(new JobSchedule(
             jobType: typeof(CpuMetricJob),
             cronExpression: "0/5 * * * * ?")); // Запускать каждые 5 секунд
-            //services.AddSingleton(new JobSchedule(
-            //jobType: typeof(RamMetricJob),
-            //cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton(new JobSchedule(
+            jobType: typeof(RamMetricJob),
+            cronExpression: "0/5 * * * * ?"));
+            services.AddHttpClient();
         }
 
         //private void ConfigureSqlLiteConnection(IServiceCollection services)
