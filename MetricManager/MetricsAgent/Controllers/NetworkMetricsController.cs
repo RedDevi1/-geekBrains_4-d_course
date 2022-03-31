@@ -58,10 +58,10 @@ namespace MetricsAgent.Controllers
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromTimeToTime([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public IList<NetworkMetric> GetMetricsWithoutPercentiles([FromRoute] DateTime fromTime, [FromRoute] DateTime toTime)
         {
             _logger.LogInformation("Привет, это мое первое сообщение в лог");
-            return Ok();
+            return repository.GetByTimePeriod(fromTime, toTime);
         }
     }
 }

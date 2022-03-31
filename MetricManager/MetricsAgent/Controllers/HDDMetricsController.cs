@@ -63,5 +63,12 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation("Привет, это мое первое сообщение в лог");
             return Ok();
         }
+
+        [HttpGet("from/{fromTime}/to/{toTime}")]
+        public IList<HddMetric> GetMetricsWithoutPercentiles([FromRoute] DateTime fromTime, [FromRoute] DateTime toTime)
+        {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
+            return repository.GetByTimePeriod(fromTime, toTime);
+        }
     }
 }

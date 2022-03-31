@@ -24,7 +24,7 @@ namespace MetricsAgent.Jobs
             var ramUsageInPercents = Convert.ToInt32(_ramCounter.NextValue());
 
             // Узнаем, когда мы сняли значение метрики
-            var time = TimeSpan.FromSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+            var time = DateTime.UtcNow;
 
             // Теперь можно записать что-то посредством репозитория
             _repository.Create(new Metrics.RamMetric { Time = time, Value = ramUsageInPercents });

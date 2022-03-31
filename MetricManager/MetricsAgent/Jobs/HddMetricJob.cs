@@ -24,7 +24,7 @@ namespace MetricsAgent.Jobs
             var hddUsageInPercents = Convert.ToInt32(_hddCounter.NextValue());
 
             // Узнаем, когда мы сняли значение метрики
-            var time = TimeSpan.FromSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+            var time = DateTime.UtcNow;
 
             // Теперь можно записать что-то посредством репозитория
             _repository.Create(new Metrics.HddMetric { Time = time, Value = hddUsageInPercents });

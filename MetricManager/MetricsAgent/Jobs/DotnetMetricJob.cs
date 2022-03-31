@@ -24,7 +24,7 @@ namespace MetricsAgent.Jobs
             var dotnetUsageInPercents = Convert.ToInt32(_dotnetCounter.NextValue());
 
             // Узнаем, когда мы сняли значение метрики
-            var time = TimeSpan.FromSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+            var time = DateTime.UtcNow;
 
             // Теперь можно записать что-то посредством репозитория
             _repository.Create(new Metrics.DotnetMetric { Time = time, Value = dotnetUsageInPercents });

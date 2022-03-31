@@ -32,7 +32,7 @@ namespace MetricsAgent.DAL.Repositories
                     // Значение запишется из поля Value объекта item
                     value = item.Value,
                     // Записываем в поле time количество секунд
-                    time = item.Time.TotalSeconds
+                    time = item.Time
                 });
             }
         }
@@ -55,7 +55,7 @@ namespace MetricsAgent.DAL.Repositories
                     new
                     {
                         value = item.Value,
-                        time = item.Time.TotalSeconds,
+                        time = item.Time,
                         id = item.Id
                     });
             }
@@ -83,20 +83,10 @@ namespace MetricsAgent.DAL.Repositories
         }
         public IList<CpuMetric> GetByTimePeriod(DateTime fromTime, DateTime toTime)
         {
-            //var metric = new CpuMetric();
-            var metricsListBeforParse = new List<CpuMetric>();
-            var metricsListAfterParse = new List<CpuMetric>();
-            var _fromTime = fromTime.TimeOfDay;
-            var _toTime = toTime.TimeOfDay;
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                metricsListBeforParse = connection.Query<CpuMetric>("SELECT Id, Time, Value FROM cpumetrics WHERE time > @_fromTime AND time < @_toTime").ToList();
-                foreach (var cur_metric in metricsListBeforParse)
-                {
-                    cur_metric.Time = 
-                    metricsListAfterParse.Add(cur_metric.);
-                }
-            }            
+                return connection.Query<CpuMetric>("SELECT * FROM cpumetrics WHERE time > @fromTime AND time < @toTime").ToList();
+            }
         }
     }
 }
