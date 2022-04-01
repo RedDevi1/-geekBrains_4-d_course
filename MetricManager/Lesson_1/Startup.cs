@@ -6,9 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using MetricsManager.Client;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Polly;
 
 namespace MetricsManager
 {
@@ -28,6 +30,8 @@ namespace MetricsManager
             services.AddSingleton<AgentInfo>();
             services.AddSingleton<ValuesHolder>();
             services.AddHttpClient();
+            services.AddHttpClient<IMetricsAgentClient, MetricsAgentClient>()
+                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(1000)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
