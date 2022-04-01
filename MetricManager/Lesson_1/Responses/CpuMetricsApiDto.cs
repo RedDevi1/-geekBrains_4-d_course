@@ -8,6 +8,6 @@ namespace MetricsManager.Responses
     public class CpuMetricsApiDto
     {
         public Uri ClientBaseAddress { get; set; }
-        public List<CpuMetricDto> Metrics { get; set; }
+        public List<CpuMetricsApiDto> Metrics { get; set; }
     }
 }

@@ -63,10 +63,11 @@ namespace MetricsManager.Controllers
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] int agentId, [FromRoute] DateTime fromTime, [FromRoute] DateTime toTime)
         {
+            var client = clientFactory.CreateClient();
             // логируем, что мы пошли в соседний сервис
             _logger.LogInformation($"starting new request to metrics agent");
             // обращение в сервис
-            var metrics = MetricsAgentClient.GetCpuMetrics(new GetAllCpuMetricsApiRequest
+            var metrics = new MetricsAgentClient(client, _logger).GetCpuMetrics(new GetAllCpuMetricsApiRequest
             {
                 FromTime = fromTime,
                 ToTime = toTime

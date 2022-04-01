@@ -7,6 +7,6 @@ namespace MetricsManager.Responses
 {
     public class AllHddMetricsApiResponse
     {
-        public List<CpuMetricDto> Metrics { get; set; }
+        public List<HddMetricsApiDto> Metrics { get; set; }
     }
 }
