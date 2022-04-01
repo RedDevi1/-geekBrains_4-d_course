@@ -11,6 +11,7 @@
     <PackageReference Include="Moq" Version="4.17.2" />
     <PackageReference Include="NLog" Version="4.7.15" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
+    <PackageReference Include="Quartz" Version="3.4.0" />
     <ProjectReference Include="..\MetricsAgent\MetricsAgent.csproj" />
     <Content Update="nlog.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
