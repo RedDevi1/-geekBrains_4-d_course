@@ -57,11 +57,19 @@ namespace MetricsAgent.Controllers
             }
             return Ok(response);
         }
+
         [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
         public IActionResult GetErrorsCount([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
         {
             _logger.LogInformation("Привет, это мое первое сообщение в лог");
             return Ok();
+        }
+
+        [HttpGet("from/{fromTime}/to/{toTime}")]
+        public IList<DotnetMetric> GetMetricsWithoutPercentiles([FromRoute] DateTime fromTime, [FromRoute] DateTime toTime)
+        {
+            _logger.LogInformation("Привет, это мое первое сообщение в лог");
+            return repository.GetByTimePeriod(fromTime, toTime);
         }
     }
 }

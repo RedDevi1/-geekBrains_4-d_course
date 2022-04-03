@@ -32,7 +32,7 @@ namespace MetricsAgent.DAL.Repositories
                     // Значение запишется из поля Value объекта item
                     value = item.Value,
                     // Записываем в поле time количество секунд
-                    time = item.Time.TotalSeconds
+                    time = item.Time
                 });
             }
         }
@@ -55,7 +55,7 @@ namespace MetricsAgent.DAL.Repositories
                     new
                     {
                         value = item.Value,
-                        time = item.Time.TotalSeconds,
+                        time = item.Time,
                         id = item.Id
                     });
             }
@@ -81,12 +81,12 @@ namespace MetricsAgent.DAL.Repositories
                     });
             }
         }
-        public IList<CpuMetric> GetByTimePeriod(TimeSpan fromTime, TimeSpan toTime)
+        public IList<CpuMetric> GetByTimePeriod(DateTime fromTime, DateTime toTime)
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
-                return connection.Query<CpuMetric>("SELECT * FROM cpumetrics WHERE time BETWEEN @fromTime AND @toTime").ToList();
-            }            
+                return connection.Query<CpuMetric>("SELECT * FROM cpumetrics WHERE time > @fromTime AND time < @toTime").ToList();
+            }
         }
     }
 }

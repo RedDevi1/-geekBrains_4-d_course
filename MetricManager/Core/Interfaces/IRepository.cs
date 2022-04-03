@@ -9,7 +9,7 @@ namespace Core.Interfaces
     {
         IList<T> GetAll();
         T GetById(int Id);
-        IList<T> GetByTimePeriod(TimeSpan fromTime, TimeSpan toTime);
+        IList<T> GetByTimePeriod(DateTime fromTime, DateTime toTime);
         void Create(T item);
         void Update(T item);
         void Delete(int id);
